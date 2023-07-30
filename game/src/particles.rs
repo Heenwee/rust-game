@@ -16,9 +16,12 @@ impl Default for Particle {
 }
 
 pub fn particle_effects(
-    particle_query: Query<&Particle>
+    particle_query: Query<&Particle>,
 ) {
     for particle in &particle_query {
-        println!("lifetime: {0}, burst: {1}", particle.lifetime, particle.burst)
+        println!("lifetime: {0}, burst: {1}", particle.lifetime, particle.burst);
+    }
+    if particle_query.is_empty() {
+        println!("empty");
     }
 }
