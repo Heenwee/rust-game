@@ -25,13 +25,16 @@ pub fn setup (
             ..default()
         },
         Player,
-        Physics{..default()},
+        Physics{
+            gravity: 0.0,
+            ..default()
+        },
     ));
 }
 
 pub fn player_input(
     keys: Res<Input<KeyCode>>,
-    mut query: Query<(&mut Physics, With<Player>)>,
+    mut query: Query<&mut Physics, With<Player>>,
 ) {
     let mut x_dir: i32 = 0;
 
@@ -42,7 +45,7 @@ pub fn player_input(
         x_dir += 1;
     }
 
-    for mut physics in &mut query {
+    for mut physics in &mut query.iter_mut() {
         let d = x_dir as f32;
         physics.velocity.x = d*PLAYER_SPEED;
     }
