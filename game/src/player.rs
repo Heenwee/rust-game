@@ -29,6 +29,14 @@ pub fn setup (
             ..default()
         },
         Collision{
+            collider: Collider::PolygonCollider {
+                points: vec![
+                    Vec2::new(-0.25/2.0, -0.25/2.0),
+                    Vec2::new(0.25/2.0, -0.25/2.0),
+                    Vec2::new(0.25/2.0, 0.25/2.0),
+                    Vec2::new(-0.25/2.0, 0.25/2.0),
+                ]
+            },
             ..default()
         }
     ));

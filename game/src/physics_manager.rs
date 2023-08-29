@@ -43,26 +43,28 @@ pub fn apply_forces(
     time_step: Res<FixedTime>,
 ) {
     for (mut transform, mut physics) in &mut query {
-        // apply gravity
-        let grav: f32 = physics.gravity;
-        physics.add_force(Vec2::new(0.0, grav));
-        // apply other forces
-        let forces: Vec2 = physics.force_sum;
-        physics.velocity += forces * time_step.period.as_secs_f32();
-        // reset forces
-        physics.force_sum = Vec2::ZERO;
-
-        //apply torque
-        let torque: f32 = physics.torque_sum;
-        physics.angular_velocity += torque;
-        // reset torque
-        physics.torque_sum = 0.0;
-
-        // move object based on velocity
-        transform.translation.x += physics.velocity.x * time_step.period.as_secs_f32() * PHYSICS_SPEED;
-        transform.translation.y += physics.velocity.y * time_step.period.as_secs_f32() * PHYSICS_SPEED;
-        // rotate objects based on torque
-        transform.rotate_z(physics.angular_velocity * time_step.period.as_secs_f32())
+        if !physics.immovable {
+            // apply gravity
+            let grav: f32 = physics.gravity;
+            physics.add_force(Vec2::new(0.0, grav));
+            // apply other forces
+            let forces: Vec2 = physics.force_sum;
+            physics.velocity += forces * time_step.period.as_secs_f32();
+            // reset forces
+            physics.force_sum = Vec2::ZERO;
+    
+            //apply torque
+            let torque: f32 = physics.torque_sum;
+            physics.angular_velocity += torque;
+            // reset torque
+            physics.torque_sum = 0.0;
+    
+            // move object based on velocity
+            transform.translation.x += physics.velocity.x * time_step.period.as_secs_f32() * PHYSICS_SPEED;
+            transform.translation.y += physics.velocity.y * time_step.period.as_secs_f32() * PHYSICS_SPEED;
+            // rotate objects based on torque
+            transform.rotate_z(physics.angular_velocity * time_step.period.as_secs_f32())
+        }
     }
 }
 //////////////////////////////////////////////////////////////////////////
