@@ -6,7 +6,7 @@ use crate::physics_manager::*;
 pub struct Player;
 
 const STARTING_POSITION: Vec3 = Vec3::new(0.0, 0.0, 0.0);
-const SQUARE_SCALE: Vec3 = Vec3::new(0.5, 0.5, 0.5);
+const SQUARE_SCALE: Vec3 = Vec3::new(0.25, 0.25, 0.25);
 const PLAYER_SPEED: f32 = 5.0;
 
 pub fn setup (
@@ -26,9 +26,11 @@ pub fn setup (
         },
         Player,
         Physics{
-            gravity: 0.0,
             ..default()
         },
+        Collision{
+            ..default()
+        }
     ));
 }
 
@@ -36,8 +38,8 @@ pub fn player_input(
     keys: Res<Input<KeyCode>>,
     mut query: Query<&mut Physics, With<Player>>,
 ) {
+    // reset direction at the start of every frame and then set direction with input
     let mut x_dir: i32 = 0;
-
     if keys.pressed(KeyCode::Left){
         x_dir += -1;
     }
